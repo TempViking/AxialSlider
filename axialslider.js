@@ -2,10 +2,14 @@
  * @param {Object} props Consider slider preferences
  * @param {Object} props.class CSS class name
  * @param {Object} props.color Buttons color
+ * @param {Object} props.duration Time of execution
+ * @param {Object} props.delay Delay time between slides
  */
 export default function initSlider(props = false) {
     window.sliders_array = [];
     let { className } = setStyles(props);
+    window.nextSlideDuration = props && props.duration ? props.duration : 1000;
+    window.nextSlideDelay = props && props.delay ? props.delay : 3000;
     const sliders = document.querySelectorAll('.axialslider');
     for (let i = 0; i < sliders.length; i++) {
         const buttons = document.createElement('div');
@@ -34,12 +38,12 @@ export default function initSlider(props = false) {
         }
         window.sliders_array[i].interval = setTimeout(() => {
             nextSlide(i);
-        }, 2000);
+        }, window.nextSlideDelay);
     }
 }
 
 /*
- * TODO: Добавить обработку изменения экрана
+ * TODO: Добавить обработку изменения экрана 
  * TODO: Добавить деструктор
  */
 async function nextSlide(n, next = -1) {
@@ -51,8 +55,7 @@ async function nextSlide(n, next = -1) {
     buttons.children[next].classList.add('axialslider__button_active');
     await new Promise(resolve => {
         window.requestAnimationFrame(function animate(time) {
-            const duration = 500;
-            let timeFraction = (time - time_start) / duration;
+            let timeFraction = (time - time_start) / window.nextSlideDuration;
             if (timeFraction > 1) timeFraction = 1;
 
             if (vertical) {
@@ -72,7 +75,7 @@ async function nextSlide(n, next = -1) {
     if (interval === window.sliders_array[n].interval) {
         window.sliders_array[n].interval = setTimeout(() => {
             nextSlide(n);
-        }, 2000);
+        }, window.nextSlideDelay);
     }
 }
 
