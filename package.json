@@ -1,0 +1,22 @@
+{
+  "name": "axialslider",
+  "version": "1.0.0",
+  "description": "Simple slider with two axes and buttons",
+  "main": "axialslider.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TempViking/axialslider.git"
+  },
+  "keywords": [
+    "slider"
+  ],
+  "author": "TempViking",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TempViking/axialslider/issues"
+  },
+  "homepage": "https://github.com/TempViking/axialslider#readme"
+}
