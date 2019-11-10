@@ -15,6 +15,8 @@ window.addEventListener('load', function () {
     axialslider({
       class: 'yourclass', // CSS class name, default: axialslider
       color: '#19bd9a' // Also you can use rgba
+      duration: 1000, // Default
+      delay: 3000 // Default delay between slides
     });
 });
 ```
