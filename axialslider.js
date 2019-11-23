@@ -44,7 +44,7 @@ export default function initSlider(props = false) {
 }
 
 /*
- * TODO: Добавить обработку изменения экрана 
+ * TODO: Добавить обработку изменения экрана
  * TODO: Добавить деструктор
  */
 async function nextSlide(n, next = -1) {
@@ -54,15 +54,17 @@ async function nextSlide(n, next = -1) {
     next = next > -1 ? next : current === amount ? 0 : current + 1;
     buttons.querySelector(`.${className}__button_active`).classList.remove(`${className}__button_active`);
     buttons.children[next].classList.add(`${className}__button_active`);
+    window.sliders_array[n].current = next;
+    let start_offset = scroll_start - (vertical ? height : width) * current;
     await new Promise(resolve => {
         window.requestAnimationFrame(function animate(time) {
             let timeFraction = (time - time_start) / window.nextSlideDuration;
             if (timeFraction > 1) timeFraction = 1;
 
             if (vertical) {
-                slides.scrollTo(0, scroll_start + (next - current) * height * timeFraction);
+                slides.scrollTo(0, scroll_start + (next - current === 0 ? 1 : next - current) * (height + start_offset) * timeFraction);
             } else {
-                slides.scrollTo(scroll_start + (next - current) * width * timeFraction, 0);
+                slides.scrollTo(scroll_start + (next - current === 0 ? 1 : next - current) * (width + start_offset) * timeFraction, 0);
             }
 
             if (timeFraction < 1) {
@@ -72,7 +74,6 @@ async function nextSlide(n, next = -1) {
             }
         });
     });
-    window.sliders_array[n].current = next;
     if (interval === window.sliders_array[n].interval) {
         window.sliders_array[n].interval = setTimeout(() => {
             nextSlide(n);
