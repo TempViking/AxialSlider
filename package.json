@@ -1,6 +1,6 @@
 {
   "name": "axialslider",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple slider with two axes and buttons",
   "main": "axialslider.js",
   "scripts": {
