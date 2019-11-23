@@ -10,25 +10,26 @@ export default function initSlider(props = false) {
     let { className } = setStyles(props);
     window.nextSlideDuration = props && props.duration ? props.duration : 1000;
     window.nextSlideDelay = props && props.delay ? props.delay : 3000;
-    const sliders = document.querySelectorAll('.axialslider');
+    const sliders = document.querySelectorAll(`.${className}`);
     for (let i = 0; i < sliders.length; i++) {
         const buttons = document.createElement('div');
-        buttons.className = 'axialslider__buttons';
+        buttons.className = `${className}__buttons`;
         sliders[i].appendChild(buttons);
         window.sliders_array.push({
-            width: sliders[i].querySelector('.axialslider__slides').offsetWidth,
-            height: sliders[i].querySelector('.axialslider__slides > .axialslider__slide').offsetHeight,
-            vertical: sliders[i].classList.contains('axialslider_vertical'),
-            amount: sliders[i].querySelector('.axialslider__slides').children.length - 1,
+            width: sliders[i].querySelector(`.${className}__slides`).offsetWidth,
+            height: sliders[i].querySelector(`.${className}__slides > .${className}__slide`).offsetHeight,
+            vertical: sliders[i].classList.contains(`${className}_vertical`),
+            amount: sliders[i].querySelector(`.${className}__slides`).children.length - 1,
             current: 0,
             interval: null,
-            slides: sliders[i].querySelector('.axialslider__slides'),
-            buttons: sliders[i].querySelector('.axialslider__buttons'),
+            slides: sliders[i].querySelector(`.${className}__slides`),
+            buttons: sliders[i].querySelector(`.${className}__buttons`),
+            className
         });
-        sliders[i].querySelector('.axialslider__slides').style.height = window.sliders_array[i].height + 'px';
+        sliders[i].querySelector(`.${className}__slides`).style.height = window.sliders_array[i].height + 'px';
         for (let a = 0; a < window.sliders_array[i].amount + 1; a++) {
             const button = document.createElement('div');
-            button.className = 'axialslider__button' + (a === 0 ? ' axialslider__button_active' : '');
+            button.className = `${className}__button` + (a === 0 ? ` ${className}__button_active` : '');
             button.addEventListener('click', () => {
                 clearTimeout(window.sliders_array[i].interval);
                 window.sliders_array[i].interval = null;
@@ -48,11 +49,11 @@ export default function initSlider(props = false) {
  */
 async function nextSlide(n, next = -1) {
     let time_start = performance.now();
-    let {width, height, vertical, slides, amount, current, buttons, interval} = window.sliders_array[n];
+    let {className, width, height, vertical, slides, amount, current, buttons, interval} = window.sliders_array[n];
     const scroll_start = vertical ? slides.scrollTop : slides.scrollLeft;
     next = next > -1 ? next : current === amount ? 0 : current + 1;
-    buttons.querySelector('.axialslider__button_active').classList.remove('axialslider__button_active');
-    buttons.children[next].classList.add('axialslider__button_active');
+    buttons.querySelector(`.${className}__button_active`).classList.remove(`${className}__button_active`);
+    buttons.children[next].classList.add(`${className}__button_active`);
     await new Promise(resolve => {
         window.requestAnimationFrame(function animate(time) {
             let timeFraction = (time - time_start) / window.nextSlideDuration;
